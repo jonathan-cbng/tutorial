@@ -1,8 +1,8 @@
 # New GUI
 
 This is a replacement for the old simple GUI test application, but is now a full stack application with a Vue.js
-frontend and a FastAPI backend. It is intended that long term this will replace the full application
-as it allows dynamic web pages and more complex interactions.
+frontend and a FastAPI backend. It is intended that long term this will replace the full application as it allows
+dynamic web pages and more complex interactions.
 
 ## Features
 
@@ -15,7 +15,7 @@ as it allows dynamic web pages and more complex interactions.
 
 ## Running the Application
 
-```sh
+```shell
 python main.py
 ```
 
@@ -23,41 +23,41 @@ python main.py
 
 ## Coding Standards
 
-1. All commit messages must follow conventional-commit rules (https://www.conventionalcommits.org/en/v1.0.0/#summary)
-1. All code must pass ruff checks (https://beta.ruff.rs/docs/), including formatting
-1. All code musy conform to the structure of the template files
-1. All code must be covered by tests. Coverage must be >90%
-1. Python files should be type-annotated as much as possible.
-1. Docstring style is Google style (https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings.
-1. Function and method docstrings should have Args, Returns and Raises sections as appropriate.
-1. FastAPI endpoints should have fully decorated parameters (e.g. Path, Query, Body etc.) so they render correctly in
-   the OpenAPI docs.
-1. All files must conform to the template files in the `templates/` directory
-1. Max line length is 120 characters for python files.
+01. All commit messages must follow conventional-commit rules (<https://www.conventionalcommits.org/en/v1.0.0/#summary>)
+02. All code must pass ruff checks (<https://beta.ruff.rs/docs/>), including formatting
+03. All code musy conform to the structure of the template files
+04. All code must be covered by tests. Coverage must be >90%
+05. Python files should be type-annotated as much as possible.
+06. Docstring style is Google style (<https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings>.
+07. Function and method docstrings should have Args, Returns and Raises sections as appropriate.
+08. FastAPI endpoints should have fully decorated parameters (e.g. Path, Query, Body etc.) so they render correctly in
+    the OpenAPI docs.
+09. All files must conform to the template files in the `templates/` directory
+10. Max line length is 120 characters for python files.
 
 ## Alembic Migrations
 
 To create a new migration after changing the database models, run:
 
-```sh
+```shell
 alembic revision --autogenerate -m "Migration message"
 ```
 
 To apply migrations, run:
 
-```sh
+```shell
 alembic upgrade head
 ```
 
 ## Running Tests
 
-```sh
+```shell
 python -m pytest test -n4 --cov=backend --cov-report=term-missing
 ```
 
 ## Project Structure
 
-```
+```asciiart
 .
 ├── alembic/                # Database migration files
 │   ├── env.py                  # Alembic environment

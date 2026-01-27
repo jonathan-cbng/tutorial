@@ -1,0 +1,3 @@
+# This file tells Vite to use frontend/index.html as the entry point.
+# It is not strictly required, but helps some editors and tools.
+index.html

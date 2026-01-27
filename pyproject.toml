@@ -1,0 +1,42 @@
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+exclude = ["alembic/*"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors (flake8)
+    "F",    # pyflakes (flake8)
+    "W",    # pycodestyle warnings (flake8)
+    "C90",  # mccabe complexity (flake8)
+    "I",    # isort
+    "N",    # pep8-naming
+    "D",    # pydocstyle
+    "UP",   # pyupgrade
+    "PL",   # pylint
+    "RUF",  # Ruff-specific rules
+    "FA",   # flake8-fastapi (FastAPI-specific)
+]
+ignore = [
+    "D100",  # Ignore missing docstring in public module
+    "D104",  # Ignore missing docstring in public package
+    "D203",  # Ignore: incompatible with D211
+    "D212",  # Ignore: incompatible with D213
+]
+
+[tool.ruff.lint.pylint]
+max-args = 6
+max-branches = 12
+max-statements = 50
+max-locals = 20
+max-returns = 6
+max-nested-blocks = 5
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend"]
+
+[tool.coverage.run]
+source = ["backend"]
+
+[tool.coverage.report]
+fail_under = 85

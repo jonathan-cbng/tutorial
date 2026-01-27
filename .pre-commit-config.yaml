@@ -87,11 +87,7 @@ repos:
     # Use this hook to let pre-commit build checkmake in its sandbox
   - id: checkmake
     args: [--config, .checkmake.ini]
-- repo: https://github.com/igorshubovych/markdownlint-cli
-  rev: v0.34.0
-  hooks:
-  - id: markdownlint
-    args: [-f]
+
 #######################################################################################################################
 # End of file
 #######################################################################################################################

@@ -1,0 +1,11 @@
+# requirements-dev.txt: Development dependencies for the project. Includes testing, linting, and pre-commit tools.
+# Used for local development and CI environments.
+
+-r requirements.txt
+httpx~=0.28.1
+pre-commit~=4.3.0
+pytest~=8.4.2
+pytest-asyncio~=1.1.0
+pytest-cov~=6.3.0
+pytest-xdist~=3.8.0
+ruff~=0.12.12

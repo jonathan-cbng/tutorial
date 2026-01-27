@@ -237,3 +237,7 @@ docs/intro_to_nodesim/_minted-presentation/
 # Node simulator binaries and build artifacts files
 node_sim/worker/accel.cpython-311-*-linux-gnu.so
 node_sim/worker/ipaddr_ctrl
+
+frontend/node_modules/
+
+frontend/package-lock.json

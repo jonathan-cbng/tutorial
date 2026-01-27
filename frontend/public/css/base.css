@@ -1,0 +1,117 @@
+@import url(//fonts.googleapis.com/css?family=Muli);
+/*@import url(//www.w3schools.com/w3css/4/w3.css);*/
+
+div.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    display: table;
+    border: 2px solid #ccc;
+    font-size: 13px;
+}
+
+div.tr, span.tr, form.tr {
+    border-bottom: 1px solid #ddd;
+    display: table-row;
+    vertical-align: middle;
+}
+
+div.tr:first-child span.tr:first-child {
+    padding-left: 16px;
+    border-bottom: 2px solid #ccc;
+}
+
+div.tr:nth-child(odd) {
+    background-color: #fff;
+    display: table-row;
+}
+
+div.tr:nth-child(even) {
+    background-color: #E7E9EB;
+    display: table-row;
+}
+
+span.td, span.th {
+    padding: 5px 5px;
+    display: table-cell;
+    vertical-align: middle;
+    border-left: 1px solid #ccc;
+}
+
+span.th {
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input.test_result::-webkit-outer-spin-button,
+input.test_result::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input.test_result[type=number] {
+    -moz-appearance: textfield;
+}
+
+.table-condensed {
+    font-size: 13px;
+}
+
+
+/* For login screens*/
+
+#login .container #login-row #login-column #login-box {
+    margin-top: 120px;
+    max-width: 600px;
+    border: 1px solid #9C9C9C;
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+    padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link {
+    margin-top: -85px;
+}
+
+/* For site banner */
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+    font-variant: small-caps;
+}
+
+.checkmark-true {
+    color: green;
+}
+
+.checkmark-false {
+    color: red;
+}
+
+.split-cell {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.top-half {
+    flex: 0 0 25px; /* Set the fixed height for the top half */
+    font-weight: bold;
+    text-align: center;
+}
+
+.bottom-half {
+    flex: 1; /* Allow the bottom half to fill the remaining space */
+    overflow: auto; /* Add scrollbars if content overflows */
+    text-align: center;
+}
+
+.text-xsmall {
+  font-size: 90%;
+}
+
+/* Removed modal styles for global use - now using Bootstrap defaults */
