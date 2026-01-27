@@ -1,8 +1,8 @@
-# New GUI
+# Full stack tutorial
 
-This is a replacement for the old simple GUI test application, but is now a full stack application with a Vue.js
-frontend and a FastAPI backend. It is intended that long term this will replace the full application as it allows
-dynamic web pages and more complex interactions.
+This is a full stack application with a Vue.js frontend and a FastAPI backend.
+
+<img width="1768" height="884" alt="image" src="https://github.com/user-attachments/assets/0e1968a7-4b02-4fa5-97dc-843a00cdbec8" />
 
 ## Features
 
