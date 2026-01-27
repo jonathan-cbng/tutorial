@@ -1,0 +1,97 @@
+#######################################################################################################################
+# pre-commit hooks for the node simulator project.
+#######################################################################################################################
+#
+# This file sets up various pre-commit hooks to ensure code quality and consistency across the project.
+#
+# The following hooks are included:
+#
+# pre-commit stage:
+# - trailing-whitespace: removes trailing whitespace from all files.
+# - end-of-file-fixer: ensures files end with a single newline (all files).
+# - pretty-format-json: formats JSON files (*.json).
+# - pretty-format-yaml: formats YAML files (*.yml, *.yaml).
+# - ruff-format, ruff-check: formats and lints Python files (*.py). Note this ryns with --unsafe-fixes enabling more
+#   aggressive fixes.
+# - mdformat: formats Markdown files (*.md).
+# - clang-format: formats C/C++ source and header files (uses Google style here).
+# - cppcheck: static analysis for C/C++ files; applies to files matching the regex "\.(c|h|cpp|hpp)$".
+# - checkmake: lints Makefiles (Makefile and related files).
+#
+# copmmit-msg stage:
+# - conventional-pre-commit: Validates commit messages against conventional commit rules (runs at commit-msg stage).
+#   See` https://www.conventionalcommits.org/` for details.
+#
+# Notes:
+# * Hooks that operate only on specific filetypes are noted above; others run on all changed files by default.
+# * If you add/remove hooks or change their file targets, update this header to keep documentation in sync.
+#######################################################################################################################
+
+default_install_hook_types:
+- pre-commit
+- commit-msg
+repos:
+  # Use ruff for automatic linting and formatting (configuration is in pyproject.toml)
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v5.0.0
+  hooks:
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: pretty-format-json
+    args: [--autofix]
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.15.0
+  hooks:
+  - id: pretty-format-yaml
+    args: [--autofix]
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.14.0
+  hooks:
+  - id: ruff-format
+  - id: ruff-check
+    args: [--fix, --unsafe-fixes, --output-format=concise]
+- repo: https://github.com/hukkin/mdformat
+  rev: 0.7.22
+  hooks:
+  - id: mdformat
+    args: [--wrap=120, --number]
+    # Optionally add plugins
+    additional_dependencies:
+    - mdformat-gfm
+    - mdformat-ruff
+    - mdformat-web
+#    - mdformat-config # Does not work in aarch64 (raspberry pi)
+- repo: https://github.com/pre-commit/mirrors-clang-format
+  rev: v18.1.4
+  hooks:
+  - id: clang-format
+    files: \.(c|h|cpp|hpp)$
+- repo: local
+  hooks:
+  - id: cppcheck
+    name: cppcheck
+    entry: cppcheck
+    language: system
+    args: [--quiet, --std=c++23, --inconclusive, --force, --error-exitcode=1, --check-level=exhaustive]
+    files: \.(c|h|cpp|hpp)$
+- repo: https://github.com/compilerla/conventional-pre-commit
+  rev: v4.2.0
+  hooks:
+  - id: conventional-pre-commit
+    stages: [commit-msg]
+    args: [--verbose]
+- repo: https://github.com/checkmake/checkmake.git
+  # Or another commit hash or version
+  rev: 0.2.2
+  hooks:
+    # Use this hook to let pre-commit build checkmake in its sandbox
+  - id: checkmake
+    args: [--config, .checkmake.ini]
+- repo: https://github.com/igorshubovych/markdownlint-cli
+  rev: v0.34.0
+  hooks:
+  - id: markdownlint
+    args: [-f]
+#######################################################################################################################
+# End of file
+#######################################################################################################################
