@@ -12,11 +12,12 @@ Provides fixtures for database session, FastAPI app, test client, and test dog b
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from sqlalchemy import event
 from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel import Session as SQLModelSession
 
-from backend.db import get_session
+from backend.db import _enable_sqlite_foreign_keys
 from backend.db_models import Breed, Case, Species
 from main import get_app
 
@@ -30,9 +31,12 @@ from main import get_app
 
 
 @pytest.fixture
-def session() -> Session:
+def session(monkeypatch) -> Session:
     """Create a new in-memory SQLite session for testing."""
     engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False}, poolclass=StaticPool)
+    event.listen(engine, "connect", _enable_sqlite_foreign_keys)
+    monkeypatch.setattr("backend.db.engine", engine)
+
     SQLModel.metadata.create_all(engine)
     with SQLModelSession(engine) as session:
         yield session
@@ -46,24 +50,11 @@ def app() -> FastAPI:
 
 
 @pytest.fixture
-def client(session, monkeypatch) -> TestClient:
+def client(session) -> TestClient:
     """Return a TestClient using the test session and monkeypatched get_session."""
-
-    def get_session_override():
-        try:
-            yield session
-        except Exception:
-            session.rollback()
-            raise
-        else:
-            session.commit()
-
-    monkeypatch.setattr("main.get_session", get_session_override)
     app = get_app()
     with TestClient(app) as client:
-        app.dependency_overrides[get_session] = get_session_override
         yield client
-        app.dependency_overrides.clear()
 
 
 @pytest.fixture

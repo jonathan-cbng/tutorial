@@ -7,10 +7,11 @@ Database setup and session management for the backend.
 - Provides a session generator for dependency injection.
 """
 
+from fastapi import HTTPException
+
 #######################################################################################################################
 # Imports
 #######################################################################################################################
-
 from sqlalchemy import create_engine, event
 from sqlmodel import Session
 
@@ -46,6 +47,9 @@ def get_session():
     with Session(engine) as session:
         try:
             yield session
+        except HTTPException:
+            session.commit()
+            raise
         except Exception:
             session.rollback()
             raise

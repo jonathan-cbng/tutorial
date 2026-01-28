@@ -230,7 +230,6 @@ class Case(DbHelperMixin, SQLModel, table=True):
     notes: str | None = Field(default=None, description="Additional notes.")
     breed_id: int = Field(foreign_key="breed.id", description="ID of the breed.")
     breed: Breed | None = Relationship()
-    foo: int = Field(default=0)
 
 
 #######################################################################################################################

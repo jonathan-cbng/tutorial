@@ -36,7 +36,7 @@ from backend.db_models import Case
 #######################################################################################################################
 
 CACHE_SIZE = 128
-CACHE_TTL = 300  # seconds
+CACHE_TTL = 30  # seconds
 case_router = APIRouter()
 
 
@@ -94,7 +94,7 @@ def fuzzy_match_ids(query: str, min_match_score: int, session: Session) -> list[
     """
     field_map = case_field_maps(session)  # This is a dictioary of case_id -> list of strings to search
     results = [
-        (case_id, process.extractOne(query, fields, score_cutoff=min_match_score))
+        (case_id, process.extractOne(query.lower(), fields, score_cutoff=min_match_score))
         for case_id, fields in field_map.items()
     ]
     results = [r for r in results if r[1] is not None]  # filter out non-matches
@@ -141,8 +141,8 @@ def list_cases(
         list[CaseRead]: List of cases matching the criteria.
 
     """
-    filter = (Case.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
-    return Case.get_all(session, greedy_fields=["breed"], additional_filters=filter)
+    filt = (Case.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
+    return Case.get_all(session, greedy_fields=["breed"], additional_filters=filt)
 
 
 @case_router.get("/{case_id}", response_model=CaseRead)

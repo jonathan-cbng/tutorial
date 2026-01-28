@@ -1,6 +1,6 @@
 [tool.ruff]
 line-length = 120
-target-version = "py312"
+target-version = "py311"
 exclude = ["alembic/*"]
 
 [tool.ruff.lint]
@@ -15,7 +15,6 @@ select = [
     "UP",   # pyupgrade
     "PL",   # pylint
     "RUF",  # Ruff-specific rules
-    "FA",   # flake8-fastapi (FastAPI-specific)
 ]
 ignore = [
     "D100",  # Ignore missing docstring in public module
@@ -35,8 +34,14 @@ max-nested-blocks = 5
 [tool.ruff.lint.isort]
 known-first-party = ["backend"]
 
+[tool.pytest.ini_options]
+testpaths = ["test"]
+python_files = "test_*.py"
+asyncio_mode = "auto"
+
 [tool.coverage.run]
 source = ["backend"]
 
 [tool.coverage.report]
 fail_under = 85
+show_missing = true

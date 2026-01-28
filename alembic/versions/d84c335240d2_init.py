@@ -42,7 +42,6 @@ def upgrade() -> None:
     sa.Column('create_date', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('notes', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.Column('breed_id', sa.Integer(), nullable=False),
-    sa.Column('foo', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['breed_id'], ['breed.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
