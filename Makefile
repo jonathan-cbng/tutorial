@@ -19,7 +19,7 @@ run: ## Run the application
 	python main.py
 
 test: ## Run tests with coverage
-	python -m pytest test -n4 --cov=backend --cov-report=term-missing
+	python -m pytest test -n4 --cov=backend --cov=database.core --cov=services --cov-report=term-missing
 
 migrate: ## Apply database migrations
 	alembic upgrade head
