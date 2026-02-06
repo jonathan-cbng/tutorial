@@ -1,4 +1,4 @@
-.PHONY: run test migrate migration-create clean frontend-dev frontend-build frontend-serve frontend-clean help all
+.PHONY: run test migrate migration-create clean frontend-dev frontend-build frontend-serve frontend-clean help docs all
 
 # Default target
 .DEFAULT_GOAL := help

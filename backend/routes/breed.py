@@ -21,8 +21,8 @@ All endpoints use SQLModel for ORM access and FastAPI dependency injection for d
 from fastapi import APIRouter, Depends, Path, Query
 from sqlmodel import Session, select
 
-from backend.database.models import BreedDbModel, Species
-from backend.database.session import get_session
+from database.core.models import BreedDbModel, Species
+from database.core.session import get_session
 
 #######################################################################################################################
 # Globals

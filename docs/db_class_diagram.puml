@@ -1,0 +1,36 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class alembic_version {
+   version_num: varchar(32)
+}
+class breed {
+   name: varchar(80)
+   species: varchar(6)
+   id: integer
+}
+class case {
+   name: varchar(80)
+   owner: varchar
+   practice_animal_id: varchar
+   chip_id: varchar
+   sex: varchar(15)
+   birth_date: varchar
+   create_date: varchar
+   notes: varchar
+   breed_id: integer
+   id: integer
+}
+class sqlite_master {
+   type: text
+   name: text
+   tbl_name: text
+   rootpage: int
+   sql: text
+}
+
+case             -[#595959,plain]-^  breed           : "breed_id:id"
+@enduml

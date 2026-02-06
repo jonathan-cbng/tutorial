@@ -7,7 +7,7 @@ Contains all SQLModel/Pydantic models NOT using table=True, for API schemas and 
 
 from sqlmodel import Field, SQLModel
 
-from backend.database.models import BreedDbModel, Sex
+from database.core.models import BreedDbModel, Sex
 
 
 # Case API models

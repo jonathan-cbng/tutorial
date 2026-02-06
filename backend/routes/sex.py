@@ -14,7 +14,7 @@ This module defines endpoints for retrieving all possible values of SexEnum.
 
 from fastapi import APIRouter
 
-from backend.database.models import Sex
+from database.core.models import Sex
 
 #######################################################################################################################
 # Globals

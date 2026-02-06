@@ -16,7 +16,7 @@ It covers normal and edge cases, including:
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from backend.database.models import Sex
+from database.core.models import Sex
 
 #######################################################################################################################
 # Globals

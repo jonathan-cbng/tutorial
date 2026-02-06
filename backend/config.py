@@ -32,7 +32,7 @@ class Config(BaseSettings):
 
     """
 
-    DATABASE_URL: str = "sqlite:///./app.db"
+    DATABASE_URL: str = "sqlite:///./database/app.db"
 
 
 config = Config()

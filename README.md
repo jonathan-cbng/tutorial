@@ -40,12 +40,14 @@ python main.py
 To create a new migration after changing the database models, run:
 
 ```shell
+cd database
 alembic revision --autogenerate -m "Migration message"
 ```
 
 To apply migrations, run:
 
 ```shell
+cd database
 alembic upgrade head
 ```
 
@@ -59,29 +61,33 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 
 ```asciiart
 .
-├── alembic/                # Database migration files
-│   ├── env.py                  # Alembic environment
-│   ├── README                  # Alembic documentation
-│   ├── script.py.mako          # Alembic script template
-│   └── versions/               # Migration versions
-├── alembic.ini             # Alembic configuration file
-├── app.db                  # SQLite database file for the app (contains standard cases)
 ├── backend/                # Backend application code
 │   ├── api.py                  # FastAPI app factory or main entry point
 │   ├── config.py               # App configuration (env vars, settings)
-│   ├── db.py                   # Database session and engine setup
 │   ├── api_models.py           # Pydantic models for API schemas
-│   ├── db_models.py            # SQLModel ORM models for database
 │   ├── routes/                 # API route modules
 │   │   ├── breed.py                # /breed endpoints
 │   │   ├── case.py                 # /case endpoints
-│   │   ├── panel.py                # /panel endpoints
+│   │   ├── species.py              # /species endpoints
 │   │   └── sex.py                  # /sex endpoints
+│   ├── services/               # Business logic and service layer
 │   └── static_data/            # Static data (e.g., dog breeds)
-│       └── dog_breeds.py           # List of dog breeds
+│       ├── breeds/                 # Breed data by species
+│       │   ├── canine.py               # Canine breeds
+│       │   ├── equine.py               # Equine breeds
+│       │   └── feline.py               # Feline breeds
 │       └── clinical_question.py    # Clinical question enums and logic
+├── database/               # Database-related files
+│   ├── alembic/                # Database migration files
+│   │   ├── env.py                  # Alembic environment
+│   │   ├── script.py.mako          # Alembic script template
+│   │   └── versions/               # Migration versions
+│   ├── alembic.ini             # Alembic configuration file
+│   ├── app.db                  # SQLite database file for the app
+│   └── core/                   # Database core modules
+│       ├── models.py               # SQLModel ORM models for database
+│       └── session.py              # Database session and engine setup
 ├── docs/                   # Documentation files
-│   └── opeanapi.json          # OpenAPI schema file
 ├── frontend/               # Frontend application (Vite + Vue)
 │   ├── index.html              # Main HTML entry
 │   ├── node_modules/           # Node.js dependencies
@@ -90,20 +96,20 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 │   ├── public/                 # Static public assets
 │   ├── src/                    # Vue source code
 │   └── vite.config.js          # Vite configuration
+├── test/                    # Pytest tests and fixtures
+│   ├── conftest.py              # Test fixtures and setup
+│   ├── test_api_db.py           # Tests for database/API interactions
+│   ├── test_breed.py            # Tests for /breed endpoints
+│   ├── test_case.py             # Tests for /case endpoints
+│   ├── test_root.py             # Tests for /api root endpoint
+│   ├── test_sex.py              # Tests for /sex endpoints
+│   └── test_species.py          # Tests for /species endpoints
 ├── main.py                  # Main entry point: FastAPI app factory, router registration, and Uvicorn startup
 ├── pyproject.toml           # Project and tool configuration (Ruff, etc.)
 ├── README.md                # Project documentation
 ├── requirements-dev.txt     # Development dependencies (pytest, ruff, pre-commit)
 ├── requirements.txt         # Main Python dependencies
-├── run.sh                   # Shell script to run the app
-├── templates/               # Template files
-│   └── template.py              # Example/template Python file
-└── test/                    # Pytest tests and fixtures
-    ├── conftest.py              # Test fixtures and setup
-    ├── test_breed.py            # Tests for /breeds endpoints
-    ├── test_case.py             # Tests for /case endpoints
-    ├── test_root.py             # Tests for /api root endpoint
-    └── test_sex.py              # Tests for /sex endpoints
+└── run.sh                   # Shell script to run the app
 ```
 
 ## Backend API summary
@@ -129,3 +135,7 @@ Below is a list of the main API endpoints provided by the FastAPI backend.
 - `GET /api/case/{case_id}` — Retrieve a clinical case by ID
 - `PUT /api/case/{case_id}` — Update a clinical case by ID
 - `DELETE /api/case/{case_id}` — Delete a clinical case by ID
+
+## Database class diagram
+
+![Database class diagram](docs/db_class_diagram.png)

@@ -26,8 +26,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from backend.api import api_router, tags_metadata
-from backend.database.session import get_session
 from backend.static_data.breeds import ensure_cat_breeds, ensure_dog_breeds, ensure_horse_breeds
+from database.core.session import get_session
 
 #######################################################################################################################
 # Globals

@@ -17,8 +17,8 @@ from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel import Session as SQLModelSession
 
-from backend.database.models import BreedDbModel, CaseDbModel, Species
-from backend.database.session import _enable_sqlite_foreign_keys
+from database.core.models import BreedDbModel, CaseDbModel, Species
+from database.core.session import _enable_sqlite_foreign_keys
 from main import get_app
 
 #######################################################################################################################
@@ -35,7 +35,7 @@ def session(monkeypatch) -> Session:
     """Create a new in-memory SQLite session for testing."""
     engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False}, poolclass=StaticPool)
     event.listen(engine, "connect", _enable_sqlite_foreign_keys)
-    monkeypatch.setattr("backend.database.session.engine", engine)
+    monkeypatch.setattr("database.core.session.engine", engine)
 
     SQLModel.metadata.create_all(engine)
     with SQLModelSession(engine) as session:

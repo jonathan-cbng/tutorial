@@ -11,7 +11,7 @@ Defines the HORSE_BREEDS tuple and the ensure_horse_breeds utility for populatin
 
 from sqlmodel import select
 
-from backend.database.models import BreedDbModel, Species
+from database.core.models import BreedDbModel, Species
 
 #######################################################################################################################
 # Globals

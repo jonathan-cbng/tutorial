@@ -17,10 +17,10 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlmodel import SQLModel, select
 
-from backend.database.models import BreedDbModel
 from backend.static_data.breeds.canine import DOG_BREEDS
 from backend.static_data.breeds.equine import HORSE_BREEDS
 from backend.static_data.breeds.feline import CAT_BREEDS
+from database.core.models import BreedDbModel
 
 #######################################################################################################################
 # Globals

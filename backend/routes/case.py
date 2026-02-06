@@ -28,8 +28,8 @@ from rapidfuzz import process
 from sqlmodel import Session
 
 from backend.api_models import CaseCreate, CaseRead, CaseUpdate
-from backend.database.models import CaseDbModel
-from backend.database.session import get_session
+from database.core.models import CaseDbModel
+from database.core.session import get_session
 
 #######################################################################################################################
 # Globals

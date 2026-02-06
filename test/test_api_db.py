@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
-from backend.database.models import BreedDbModel, CaseDbModel, Species
+from database.core.models import BreedDbModel, CaseDbModel, Species
 
 
 class TestSessionManagement:

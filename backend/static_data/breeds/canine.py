@@ -11,7 +11,7 @@ Defines the DOG_BREEDS tuple and the ensure_dog_breeds utility for populating th
 
 from sqlmodel import select
 
-from backend.database.models import BreedDbModel, Species
+from database.core.models import BreedDbModel, Species
 
 #######################################################################################################################
 # Globals
