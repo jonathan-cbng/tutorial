@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
+cd database
 alembic upgrade head
-python -m uvicorn main:app
+cd ..
+./main.py
