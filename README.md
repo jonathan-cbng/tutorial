@@ -57,18 +57,11 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 │   ├── api.py                  # FastAPI app factory or main entry point
 │   ├── config.py               # App configuration (env vars, settings)
 │   ├── api_models.py           # Pydantic models for API schemas
-│   ├── routes/                 # API route modules
-│   │   ├── breed.py                # /breed endpoints
-│   │   ├── case.py                 # /case endpoints
-│   │   ├── species.py              # /species endpoints
-│   │   └── sex.py                  # /sex endpoints
-│   ├── services/               # Business logic and service layer
-│   └── static_data/            # Static data (e.g., dog breeds)
-│       ├── breeds/                 # Breed data by species
-│       │   ├── canine.py               # Canine breeds
-│       │   ├── equine.py               # Equine breeds
-│       │   └── feline.py               # Feline breeds
-│       └── clinical_question.py    # Clinical question enums and logic
+│   └── routes/                 # API route modules
+│       ├── breed.py                # /breed endpoints
+│       ├── case.py                 # /case endpoints
+│       ├── species.py              # /species endpoints
+│       └── sex.py                  # /sex endpoints
 ├── database/               # Database-related files
 │   ├── alembic/                # Database migration files
 │   │   ├── env.py                  # Alembic environment
@@ -78,8 +71,12 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 │   ├── app.db                  # SQLite database file for the app
 │   └── core/                   # Database core modules
 │       ├── models.py               # SQLModel ORM models for database
-│       └── session.py              # Database session and engine setup
+│       ├── session.py              # Database session and engine setup
+│       └── helpers.py              # Database helper functions
 ├── docs/                   # Documentation files
+│   ├── db_class_diagram.png    # Database class diagram
+│   ├── db_class_diagram.puml   # PlantUML source for class diagram
+│   └── Makefile                # Makefile for documentation generation
 ├── frontend/               # Frontend application (Vite + Vue)
 │   ├── index.html              # Main HTML entry
 │   ├── node_modules/           # Node.js dependencies
@@ -87,21 +84,38 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 │   ├── package-lock.json       # Lockfile for npm
 │   ├── public/                 # Static public assets
 │   ├── src/                    # Vue source code
+│   │   ├── api.js                  # API client
+│   │   ├── App.vue                 # Main app component
+│   │   ├── main.js                 # Entry point
+│   │   ├── router.js               # Router configuration
+│   │   ├── dompurify.js            # DOMPurify configuration
+│   │   └── components/             # Vue components
+│   ├── dist/                   # Built frontend files
 │   └── vite.config.js          # Vite configuration
-├── test/                    # Pytest tests and fixtures
-│   ├── conftest.py              # Test fixtures and setup
-│   ├── test_api_db.py           # Tests for database/API interactions
-│   ├── test_breed.py            # Tests for /breed endpoints
-│   ├── test_case.py             # Tests for /case endpoints
-│   ├── test_root.py             # Tests for /api root endpoint
-│   ├── test_sex.py              # Tests for /sex endpoints
-│   └── test_species.py          # Tests for /species endpoints
-├── main.py                  # Main entry point: FastAPI app factory, router registration, and Uvicorn startup
-├── pyproject.toml           # Project and tool configuration (Ruff, etc.)
-├── README.md                # Project documentation
-├── requirements-dev.txt     # Development dependencies (pytest, ruff, pre-commit)
-├── requirements.txt         # Main Python dependencies
-└── run.sh                   # Shell script to run the app
+├── services/               # Business logic and service layer
+│   ├── fuzzy.py                # Fuzzy matching service
+│   └── static_data/            # Static data (e.g., dog breeds)
+│       └── breeds/                 # Breed data by species
+│           ├── canine.py               # Canine breeds
+│           ├── equine.py               # Equine breeds
+│           └── feline.py               # Feline breeds
+├── test/                   # Pytest tests and fixtures
+│   ├── conftest.py             # Test fixtures and setup
+│   ├── test_api_db.py          # Tests for database/API interactions
+│   ├── test_breed.py           # Tests for /breed endpoints
+│   ├── test_case.py            # Tests for /case endpoints
+│   ├── test_root.py            # Tests for /api root endpoint
+│   ├── test_sex.py             # Tests for /sex endpoints
+│   └── test_species.py         # Tests for /species endpoints
+├── utils/                  # Utility files
+│   └── plantuml-mit-1.2025.9.jar   # PlantUML JAR for diagram generation
+├── main.py                 # Main entry point: FastAPI app factory, router registration, and Uvicorn startup
+├── Makefile                # Makefile for common tasks
+├── pyproject.toml          # Project and tool configuration (Ruff, etc.)
+├── README.md               # Project documentation
+├── requirements-dev.txt    # Development dependencies (pytest, ruff, pre-commit)
+├── requirements.txt        # Main Python dependencies
+└── run.sh                  # Shell script to run the app
 ```
 
 ## Backend API summary
