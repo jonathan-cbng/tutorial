@@ -1,23 +1,27 @@
-# Full stack tutorial
+# Full stack reference application template
 
-This is a full stack application with a Vue.js frontend and a FastAPI backend.
+This is a full stack application demonstrating a reference architecture for a modern web application.
 
-<img width="1768" height="884" alt="image" src="https://github.com/user-attachments/assets/0e1968a7-4b02-4fa5-97dc-843a00cdbec8" />
+It uses the following technologies for each layer:
 
-## Features
-
-- FastAPI backend
-- SQLModel ORM with SQLite support
-- Modular route structure
-- Pytest-based testing suite
-- Alembic for database migrations
-- Vue.js frontend with Vite
+- Backend: FastAPI with SQLModel ORM for serialization (loosely coupled to the database models).
+- Frontend: Vue.js with Vite build tool. Single-page application with routing and state management. Served using
+  FastAPI's static file serving capabilities for simplicity, but can be easily switched to a separate frontend server or
+  CDN in production.
+- Database: SQLite (for simplicity, but can be easily switched to PostgreSQL or MySQL) using SQLModel as the ORM and
+  Alembic for migrations. (SQLAlchemy is also an option as SQLModel is built on top of it)
+- Testing: Pytest
 
 ## Running the Application
 
 ```shell
 python main.py
 ```
+
+Your browser should open automatically to <http://localhost:8000> and you should see the frontend application as below.
+The backend API will be available at <http://localhost:8000/api>.
+
+<img width="1768" height="884" alt="image" src="https://github.com/user-attachments/assets/0e1968a7-4b02-4fa5-97dc-843a00cdbec8" />
 
 # Development information
 
@@ -43,6 +47,8 @@ To create a new migration after changing the database models, run:
 cd database
 alembic revision --autogenerate -m "Migration message"
 ```
+
+Then edit the generated migration file in `database/alembic/versions/` as needed.
 
 To apply migrations, run:
 
