@@ -25,7 +25,30 @@ The backend API will be available at <http://localhost:8000/api>.
 
 # Development information
 
-## Alembic Migrations
+## Frontend
+
+The frontend is a single-page application built with Vue 3 and Bootstrap 5, using Vite as the build tool. It provides a
+responsive user interface for managing veterinary and pathology cases, with features for listing, adding, editing, and
+deleting cases, as well as managing breeds and sexes. The frontend is served as static files by the FastAPI backend in
+production, but can be run independently during development with hot module replacement. For detailed information about
+the frontend architecture, development setup, and build process, see [frontend/README.md](frontend/README.md).
+
+## Database
+
+The database layer uses SQLite with SQLModel as the ORM, providing a lightweight yet production-ready data persistence
+solution. SQLModel combines the best of SQLAlchemy and Pydantic, offering type-safe database models that integrate
+seamlessly with FastAPI. The project structure separates database models, session management, and helper functions in
+the `database/core/` directory, while migration files are organized in `database/alembic/versions/`. This setup can be
+easily adapted to PostgreSQL or MySQL for production deployments.
+
+### Database migrations using Alembic
+
+Alembic is a database migration tool for SQLAlchemy that manages schema changes over time. It works by generating Python
+scripts that describe the differences between database schema versions, allowing you to upgrade or downgrade your
+database schema in a controlled, version-controlled manner. Alembic can automatically detect changes to your
+SQLModel/SQLAlchemy models and generate migration scripts, though these should be reviewed and edited as needed before
+applying. This approach ensures that database schema changes are tracked, reproducible, and can be applied consistently
+across development, testing, and production environments.
 
 To create a new migration after changing the database models, run:
 
@@ -43,7 +66,23 @@ cd database
 alembic upgrade head
 ```
 
+## Service Layer
+
+The service layer sits between the API routes and the database, encapsulating business logic and domain-specific
+operations. It includes utilities like fuzzy matching for breed names (allowing users to search with approximate or
+misspelled breed names) and static data management for breed information organized by species. This layer promotes
+separation of concerns by keeping business logic out of API routes and database models, making the codebase more
+maintainable and testable. Services can be easily extended to include additional functionality such as validation rules,
+data transformations, or integrations with external systems.
+
 ## Running Tests
+
+Pytest is a powerful testing framework for Python that makes it easy to write simple and scalable test cases. It
+provides a rich plugin ecosystem, including pytest-cov for coverage reporting and pytest-xdist for parallel test
+execution. The test suite uses fixtures defined in `conftest.py` to set up test databases and API clients, ensuring
+isolated and repeatable tests. Tests are organized by feature area (breed, case, species, sex) and cover both API
+endpoints and database interactions. The `-n4` flag runs tests in parallel across 4 workers for faster execution, while
+the `--cov` flags generate coverage reports to ensure the codebase maintains the required >90% coverage threshold.
 
 ```shell
 python -m pytest test -n4 --cov=backend --cov-report=term-missing
@@ -77,7 +116,7 @@ python -m pytest test -n4 --cov=backend --cov-report=term-missing
 │   ├── db_class_diagram.png    # Database class diagram
 │   ├── db_class_diagram.puml   # PlantUML source for class diagram
 │   └── Makefile                # Makefile for documentation generation
-├── frontend/               # Frontend application (Vite + Vue)
+├── frontend/               # Frontend application (Vite + Vue) - see [frontend/README.md](frontend/README.md)
 │   ├── index.html              # Main HTML entry
 │   ├── node_modules/           # Node.js dependencies
 │   ├── package.json            # Frontend dependencies and scripts

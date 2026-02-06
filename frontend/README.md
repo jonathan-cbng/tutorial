@@ -1,8 +1,10 @@
-# Demmonstrator for tutorial
+# Demonstration frontend for tutorial
 
-This is a simple full-stack application the frontend for the application, built with Vue 3 and Bootstrap 5, using Vite
-as the build tool. The application provides a user interface for managing veterinary/pathology cases, including features
-for listing, adding, and deleting cases, as well as managing breeds and sexes.
+> **Note**: For overall project information, see the [main README](../README.md).
+
+This is the frontend for a simple full-stack application, built with Vue 3 and Bootstrap 5, using Vite as the build
+tool. The application provides a user interface for managing veterinary and pathology cases, including features for
+listing, adding, and deleting cases, as well as managing breeds and sexes.
 
 ## Features
 
@@ -15,21 +17,30 @@ for listing, adding, and deleting cases, as well as managing breeds and sexes.
 ## Project Structure
 
 ```asciiart
-frontend/                 # Frontend root: Vue 3 app, config, and static assets
-├── index.html            # Main HTML entry point for the SPA
-├── package.json          # NPM dependencies and scripts
-├── vite.config.js        # Vite build and dev server configuration
-├── public/               # Static public assets
+frontend/                    # Frontend root: Vue 3 app, config, and static assets
+├── index.html               # Main HTML entry point for the SPA
+├── package.json             # NPM dependencies and scripts
+├── vite.config.js           # Vite build and dev server configuration
+├── Makefile                 # Build and deployment tasks
+├── public/                  # Static public assets
 │   ├── css/
-│   │   └── base.css      # Custom base CSS overrides
-│   └── logos_icons/
-│       └── ...           # Logo and icon image assets
-├── src/                  # Application source code
-│   ├── App.vue           # Main Vue app component
-│   ├── main.js           # JS entry point, mounts Vue app
+│   │   └── base.css         # Custom base CSS overrides
+│   └── logos_icons/         # Logo and icon image assets
+├── src/                     # Application source code
+│   ├── App.vue              # Main Vue app component
+│   ├── main.js              # JS entry point, mounts Vue app
+│   ├── router.js            # Vue Router configuration
+│   ├── api.js               # API client for backend requests
+│   ├── dompurify.js         # DOM purification utility
 │   └── components/
-│       ├── CaseList.vue  # Case list/table component
-│       └── Layout.vue    # Layout and navigation component
+│       ├── CaseList.vue     # Case list/table component
+│       ├── CaseListView.vue # Case list view wrapper
+│       ├── CaseCreate.vue   # Create new case form
+│       ├── CaseEdit.vue     # Edit case form
+│       ├── CaseDetails.vue  # Case details display
+│       ├── CaseInfo.vue     # Case information component
+│       ├── CaseSearchBox.vue # Case search functionality
+│       └── Layout.vue       # Layout and navigation component
 ```
 
 ## Prerequisites
@@ -70,7 +81,8 @@ To build the app for production:
 npm run build
 ```
 
-- The production-ready files will be output to the `../dist` directory (relative to `frontend`).
+- The production-ready files will be output to the `dist` directory, which can then be served directly from the FastAPI
+  backend server.
 
 ## Previewing the Production Build
 
@@ -82,9 +94,9 @@ npm run serve
 
 - This will serve the built files at `http://localhost:4173` by default.
 
-## Customization
+## Customisation
 
-- **Bootstrap**: The project uses Bootstrap 5 for styling. You can customize styles in `public/css/base.css` or override
+- **Bootstrap**: The project uses Bootstrap 5 for styling. You can customise styles in `public/css/base.css` or override
   Bootstrap classes as needed.
 - **API Proxy**: The Vite dev server proxies `/api` requests to the backend. Adjust the proxy target in `vite.config.js`
   if your backend runs elsewhere.
@@ -93,7 +105,7 @@ npm run serve
 
 - The frontend expects a compatible backend API for cases, breeds, and sexes at `/api/case`, `/api/breed`, and
   `/api/sex`.
-- Deployment banner and branding can be customized via props in `App.vue` and `Layout.vue`.
+- Deployment banner and branding can be customised via props in `App.vue` and `Layout.vue`.
 
 ## License
 
