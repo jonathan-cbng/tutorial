@@ -13,7 +13,7 @@ from enum import Enum
 
 from sqlmodel import Field, Relationship, SQLModel
 
-from database.core.helpers import HelperMixin
+from .helpers import HelperMixin
 
 #######################################################################################################################
 # Globals

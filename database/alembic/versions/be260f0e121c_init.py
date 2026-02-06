@@ -1,9 +1,9 @@
 """
 init.
 
-Revision ID: 5d4dd26e0f8d
+Revision ID: be260f0e121c
 Revises:
-Create Date: 2026-02-06 10:48:23.841149
+Create Date: 2026-02-06 12:51:45.681050
 
 """
 
@@ -14,7 +14,7 @@ import sqlmodel
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "5d4dd26e0f8d"
+revision: str = "be260f0e121c"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
