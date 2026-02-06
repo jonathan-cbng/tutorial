@@ -17,10 +17,10 @@ from fastapi import status
 from fastapi.testclient import TestClient
 from sqlmodel import SQLModel, select
 
-from backend.static_data.breeds.canine import DOG_BREEDS
-from backend.static_data.breeds.equine import HORSE_BREEDS
-from backend.static_data.breeds.feline import CAT_BREEDS
-from database.core.models import BreedDbModel
+from database.core.models import Breed
+from services.static_data.breeds.canine import DOG_BREEDS
+from services.static_data.breeds.equine import HORSE_BREEDS
+from services.static_data.breeds.feline import CAT_BREEDS
 
 #######################################################################################################################
 # Globals
@@ -57,7 +57,7 @@ class TestBreedAPI:
 
     def test_get_breed_by_id(self, client: TestClient, session: SQLModel) -> None:
         """Test GET /api/breeds/{id} returns the correct breed by ID."""
-        breed = session.exec(select(BreedDbModel).where(BreedDbModel.name == DOG_BREEDS[0])).first()
+        breed = session.exec(select(Breed).where(Breed.name == DOG_BREEDS[0])).first()
         assert breed is not None
         resp = client.get(f"{self.base_url}/{breed.id}")
         assert resp.status_code == status.HTTP_200_OK

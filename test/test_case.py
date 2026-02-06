@@ -23,7 +23,7 @@ It covers normal and edge cases, including:
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from database.core.models import BreedDbModel
+from database.core.models import Breed
 from services.fuzzy import case_field_maps, fuzzy_match_ids
 
 #######################################################################################################################
@@ -35,7 +35,7 @@ from services.fuzzy import case_field_maps, fuzzy_match_ids
 #######################################################################################################################
 
 
-def case_payload(breed: BreedDbModel) -> dict:
+def case_payload(breed: Breed) -> dict:
     """Return a dictionary payload for creating a test case with the given breed."""
     return {
         "name": "TestCase",
@@ -55,7 +55,7 @@ class TestCaseAPI:
 
     base_url = "/api/case"
 
-    def test_create_case(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_create_case(self, client: TestClient, dog_breed: Breed) -> None:
         """Test POST /api/case/: Create a case with valid data. Expect 201 and correct response body."""
         payload = case_payload(dog_breed)
         response = client.post(f"{self.base_url}", json=payload)
@@ -72,7 +72,7 @@ class TestCaseAPI:
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == []
 
-    def test_list_cases_after_create(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_list_cases_after_create(self, client: TestClient, dog_breed: Breed) -> None:
         """Test GET /case/: List cases after creating one. Expect 200 and list with the created case."""
         payload = case_payload(dog_breed)
         client.post(f"{self.base_url}", json=payload)
@@ -85,7 +85,7 @@ class TestCaseAPI:
         assert "breed" in cases[0] and isinstance(cases[0]["breed"], dict)
         assert cases[0]["breed"]["id"] == payload["breed_id"]
 
-    def test_get_case_by_id(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_get_case_by_id(self, client: TestClient, dog_breed: Breed) -> None:
         """Test GET /case/{id}: Retrieve a case by ID. Expect 200 and correct case data."""
         payload = case_payload(dog_breed)
         post_resp = client.post(f"{self.base_url}", json=payload)
@@ -104,7 +104,7 @@ class TestCaseAPI:
         response = client.get(f"{self.base_url}/{random_id}")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_update_case(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_update_case(self, client: TestClient, dog_breed: Breed) -> None:
         """Test PUT /case/{id}: Update an existing case. Expect 200 and updated data."""
         payload = case_payload(dog_breed)
         post_resp = client.post(f"{self.base_url}", json=payload)
@@ -114,14 +114,14 @@ class TestCaseAPI:
         assert put_resp.status_code == status.HTTP_200_OK
         assert put_resp.json()["name"] == "UpdatedCase"
 
-    def test_update_case_not_found(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_update_case_not_found(self, client: TestClient, dog_breed: Breed) -> None:
         """Test PUT /case/{id}: Update a non-existent case. Expect 404."""
         random_id = 999999  # Use an integer that won't exist
         payload = case_payload(dog_breed)
         response = client.put(f"{self.base_url}/{random_id}", json=payload)
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_delete_case(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_delete_case(self, client: TestClient, dog_breed: Breed) -> None:
         """Test DELETE /case/{id}: Delete an existing case. Expect 204, then 404 on retrieval."""
         payload = case_payload(dog_breed)
         post_resp = client.post(f"{self.base_url}", json=payload)
@@ -138,7 +138,7 @@ class TestCaseAPI:
         response = client.delete(f"{self.base_url}/{random_id}")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_fuzzy_search_cases(self, client: TestClient, dog_breed: BreedDbModel) -> None:
+    def test_fuzzy_search_cases(self, client: TestClient, dog_breed: Breed) -> None:
         """Test GET /case/?fuzzy_match=...: Fuzzy search returns expected cases by name, owner, notes, or breed."""
         # Clear caches to avoid stale data between tests
         fuzzy_match_ids.cache_clear()

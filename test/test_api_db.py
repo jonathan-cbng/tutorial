@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlmodel import Session, select
 from starlette.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
-from database.core.models import BreedDbModel, CaseDbModel, Species
+from database.core.models import Breed, Case, Species
 
 
 class TestSessionManagement:
@@ -37,7 +37,7 @@ class TestSessionManagement:
 
         # Check if it was committed
         with Session(session.bind) as check_session:
-            statement = select(CaseDbModel).where(CaseDbModel.name == "ApiCommitCase")
+            statement = select(Case).where(Case.name == "ApiCommitCase")
             results = check_session.exec(statement).all()
             assert len(results) == 1
 
@@ -48,12 +48,12 @@ class TestSessionManagement:
 
         # We'll use a side effect that adds a breed to the session then raises HTTPException.
         def add_and_raise(s):
-            breed = BreedDbModel(name="ApiHttpBreed", species=Species.CANINE)
+            breed = Breed(name="ApiHttpBreed", species=Species.CANINE)
             s.add(breed)
             s.flush()  # Ensure it's in the session's pending changes
             raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail="Test Error")
 
-        with patch("backend.routes.case.CaseDbModel.create", side_effect=add_and_raise):
+        with patch("backend.routes.case.Case.create", side_effect=add_and_raise):
             case_data = {
                 "name": "Dummy",
                 "breed_id": dog_breed.id,
@@ -63,7 +63,7 @@ class TestSessionManagement:
 
         # Check if ApiHttpBreed was committed
         with Session(session.bind) as check_session:
-            statement = select(BreedDbModel).where(BreedDbModel.name == "ApiHttpBreed")
+            statement = select(Breed).where(Breed.name == "ApiHttpBreed")
             results = check_session.exec(statement).all()
             assert len(results) == 1
 
@@ -71,12 +71,12 @@ class TestSessionManagement:
         """Test that get_session rolls back when API raises a general Exception."""
 
         def add_and_raise_val_error(s):
-            breed = BreedDbModel(name="ApiRollbackBreed", species=Species.CANINE)
+            breed = Breed(name="ApiRollbackBreed", species=Species.CANINE)
             s.add(breed)
             s.flush()
             raise ValueError("Test Exception")
 
-        with patch("backend.routes.case.CaseDbModel.create", side_effect=add_and_raise_val_error):
+        with patch("backend.routes.case.Case.create", side_effect=add_and_raise_val_error):
             case_data = {
                 "name": "Dummy",
                 "breed_id": dog_breed.id,
@@ -86,6 +86,6 @@ class TestSessionManagement:
 
         # Check if ApiRollbackBreed was NOT committed
         with Session(session.bind) as check_session:
-            statement = select(BreedDbModel).where(BreedDbModel.name == "ApiRollbackBreed")
+            statement = select(Breed).where(Breed.name == "ApiRollbackBreed")
             results = check_session.exec(statement).all()
             assert len(results) == 0

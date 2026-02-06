@@ -26,7 +26,7 @@ from cachetools import LRUCache, TTLCache, cached
 from rapidfuzz import process
 from sqlmodel import Session
 
-from database.core.models import CaseDbModel
+from database.core.models import Case
 
 #######################################################################################################################
 # Globals
@@ -55,7 +55,7 @@ def case_field_maps(session: Session) -> dict[int, list[str]]:
         dict[int, list[str]]: Mapping from case ID to list of searchable strings.
 
     """
-    cases = CaseDbModel.get_all(session, greedy_fields=["breed"])
+    cases = Case.get_all(session, greedy_fields=["breed"])
     field_map = {}
     for case in cases:
         strings = []

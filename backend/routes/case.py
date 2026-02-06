@@ -26,7 +26,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlmodel import Session
 
 from backend.api_models import CaseCreate, CaseRead, CaseUpdate
-from database.core.models import CaseDbModel
+from database.core.models import Case
 from database.core.session import get_session
 from services.fuzzy import fuzzy_match_ids
 
@@ -45,7 +45,7 @@ case_router = APIRouter()
 @case_router.post("", response_model=CaseRead, status_code=status.HTTP_201_CREATED)
 def create_case(case: CaseCreate, session: Session = Depends(get_session)):
     """Create a new clinical case."""
-    case = CaseDbModel.model_validate(case)
+    case = Case.model_validate(case)
     return case.create(session)
 
 
@@ -79,27 +79,27 @@ def list_cases(
         list[CaseRead]: List of cases matching the criteria.
 
     """
-    filt = (CaseDbModel.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
-    return CaseDbModel.get_all(session, greedy_fields=["breed"], additional_filters=filt)
+    filt = (Case.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
+    return Case.get_all(session, greedy_fields=["breed"], additional_filters=filt)
 
 
 @case_router.get("/{case_id}", response_model=CaseRead)
 def get_case(case_id: int, session: Session = Depends(get_session)):
     """Retrieve a clinical case by ID."""
-    return CaseDbModel.get_by_id_or_404(session, case_id, greedy_fields=["breed"])
+    return Case.get_by_id_or_404(session, case_id, greedy_fields=["breed"])
 
 
 @case_router.put("/{case_id}", response_model=CaseRead)
 def update_case(case_id: int, case_data: CaseUpdate, session: Session = Depends(get_session)):
     """Update a clinical case by ID."""
-    db_case = CaseDbModel.get_by_id_or_404(session, case_id)
+    db_case = Case.get_by_id_or_404(session, case_id)
     return db_case.update(session, case_data)
 
 
 @case_router.delete("/{case_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_case(case_id: int, session: Session = Depends(get_session)):
     """Delete a clinical case by ID."""
-    db_case = CaseDbModel.get_by_id_or_404(session, case_id)
+    db_case = Case.get_by_id_or_404(session, case_id)
     session.delete(db_case)
     session.commit()
 

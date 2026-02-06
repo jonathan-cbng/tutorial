@@ -11,7 +11,7 @@ Defines the CAT_BREEDS tuple and the ensure_cat_breeds utility for populating th
 
 from sqlmodel import select
 
-from database.core.models import BreedDbModel, Species
+from database.core.models import Breed, Species
 
 #######################################################################################################################
 # Globals
@@ -72,10 +72,8 @@ CAT_BREEDS = (
 
 def ensure_cat_breeds(session):
     """Ensure all standard cat breeds exist in the database for the Feline species."""
-    existing = set(
-        name for name in session.exec(select(BreedDbModel.name).where(BreedDbModel.species == Species.FELINE)).all()
-    )
-    to_add = [BreedDbModel(name=cat, species=Species.FELINE) for cat in CAT_BREEDS if cat not in existing]
+    existing = set(name for name in session.exec(select(Breed.name).where(Breed.species == Species.FELINE)).all())
+    to_add = [Breed(name=cat, species=Species.FELINE) for cat in CAT_BREEDS if cat not in existing]
     if to_add:
         session.add_all(to_add)
         session.commit()

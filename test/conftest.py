@@ -17,7 +17,7 @@ from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel import Session as SQLModelSession
 
-from database.core.models import BreedDbModel, CaseDbModel, Species
+from database.core.models import Breed, Case, Species
 from database.core.session import _enable_sqlite_foreign_keys
 from main import get_app
 
@@ -58,14 +58,14 @@ def client(session) -> TestClient:
 
 
 @pytest.fixture
-def dog_breed(session: Session) -> BreedDbModel:
+def dog_breed(session: Session) -> Breed:
     """Create and return a test dog breed in the test session."""
-    breed = BreedDbModel(name="TestBreed", species=Species.CANINE)
+    breed = Breed(name="TestBreed", species=Species.CANINE)
     return breed.create(session)
 
 
 @pytest.fixture
-def empty_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
+def empty_case(session, dog_breed: Breed) -> Case:
     """
     Fixture to create a test case for panel tests.
 
@@ -79,7 +79,7 @@ def empty_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
         Case: The created Case instance.
 
     """
-    case = CaseDbModel(
+    case = Case(
         name="PanelCase",
         owner="Owner",
         practice_animal_id="PA456",
@@ -94,9 +94,9 @@ def empty_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
 
 
 @pytest.fixture
-def another_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
+def another_case(session, dog_breed: Breed) -> Case:
     """Fixture to create a second test case for panel filtering tests."""
-    case = CaseDbModel(
+    case = Case(
         name="AnotherPanelCase",
         owner="AnotherOwner",
         practice_animal_id="PA789",
