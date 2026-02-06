@@ -17,8 +17,8 @@ from sqlalchemy.pool import StaticPool
 from sqlmodel import Session, SQLModel, create_engine
 from sqlmodel import Session as SQLModelSession
 
-from backend.db import _enable_sqlite_foreign_keys
-from backend.db_models import Breed, Case, Species
+from backend.database.models import BreedDbModel, CaseDbModel, Species
+from backend.database.session import _enable_sqlite_foreign_keys
 from main import get_app
 
 #######################################################################################################################
@@ -35,7 +35,7 @@ def session(monkeypatch) -> Session:
     """Create a new in-memory SQLite session for testing."""
     engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False}, poolclass=StaticPool)
     event.listen(engine, "connect", _enable_sqlite_foreign_keys)
-    monkeypatch.setattr("backend.db.engine", engine)
+    monkeypatch.setattr("backend.database.session.engine", engine)
 
     SQLModel.metadata.create_all(engine)
     with SQLModelSession(engine) as session:
@@ -58,14 +58,14 @@ def client(session) -> TestClient:
 
 
 @pytest.fixture
-def dog_breed(session: Session) -> Breed:
+def dog_breed(session: Session) -> BreedDbModel:
     """Create and return a test dog breed in the test session."""
-    breed = Breed(name="TestBreed", species=Species.CANINE)
+    breed = BreedDbModel(name="TestBreed", species=Species.CANINE)
     return breed.create(session)
 
 
 @pytest.fixture
-def empty_case(session, dog_breed: Breed) -> Case:
+def empty_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
     """
     Fixture to create a test case for panel tests.
 
@@ -79,7 +79,7 @@ def empty_case(session, dog_breed: Breed) -> Case:
         Case: The created Case instance.
 
     """
-    case = Case(
+    case = CaseDbModel(
         name="PanelCase",
         owner="Owner",
         practice_animal_id="PA456",
@@ -94,9 +94,9 @@ def empty_case(session, dog_breed: Breed) -> Case:
 
 
 @pytest.fixture
-def another_case(session, dog_breed: Breed) -> Case:
+def another_case(session, dog_breed: BreedDbModel) -> CaseDbModel:
     """Fixture to create a second test case for panel filtering tests."""
-    case = Case(
+    case = CaseDbModel(
         name="AnotherPanelCase",
         owner="AnotherOwner",
         practice_animal_id="PA789",

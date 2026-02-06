@@ -28,8 +28,8 @@ from rapidfuzz import process
 from sqlmodel import Session
 
 from backend.api_models import CaseCreate, CaseRead, CaseUpdate
-from backend.db import get_session
-from backend.db_models import Case
+from backend.database.models import CaseDbModel
+from backend.database.session import get_session
 
 #######################################################################################################################
 # Globals
@@ -59,7 +59,7 @@ def case_field_maps(session: Session) -> dict[int, list[str]]:
         dict[int, list[str]]: Mapping from case ID to list of searchable strings.
 
     """
-    cases = Case.get_all(session, greedy_fields=["breed"])
+    cases = CaseDbModel.get_all(session, greedy_fields=["breed"])
     field_map = {}
     for case in cases:
         strings = []
@@ -107,7 +107,7 @@ def fuzzy_match_ids(query: str, min_match_score: int, session: Session) -> list[
 @case_router.post("", response_model=CaseRead, status_code=status.HTTP_201_CREATED)
 def create_case(case: CaseCreate, session: Session = Depends(get_session)):
     """Create a new clinical case."""
-    case = Case.model_validate(case)
+    case = CaseDbModel.model_validate(case)
     return case.create(session)
 
 
@@ -141,27 +141,27 @@ def list_cases(
         list[CaseRead]: List of cases matching the criteria.
 
     """
-    filt = (Case.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
-    return Case.get_all(session, greedy_fields=["breed"], additional_filters=filt)
+    filt = (CaseDbModel.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
+    return CaseDbModel.get_all(session, greedy_fields=["breed"], additional_filters=filt)
 
 
 @case_router.get("/{case_id}", response_model=CaseRead)
 def get_case(case_id: int, session: Session = Depends(get_session)):
     """Retrieve a clinical case by ID."""
-    return Case.get_by_id_or_404(session, case_id, greedy_fields=["breed"])
+    return CaseDbModel.get_by_id_or_404(session, case_id, greedy_fields=["breed"])
 
 
 @case_router.put("/{case_id}", response_model=CaseRead)
 def update_case(case_id: int, case_data: CaseUpdate, session: Session = Depends(get_session)):
     """Update a clinical case by ID."""
-    db_case = Case.get_by_id_or_404(session, case_id)
+    db_case = CaseDbModel.get_by_id_or_404(session, case_id)
     return db_case.update(session, case_data)
 
 
 @case_router.delete("/{case_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_case(case_id: int, session: Session = Depends(get_session)):
     """Delete a clinical case by ID."""
-    db_case = Case.get_by_id_or_404(session, case_id)
+    db_case = CaseDbModel.get_by_id_or_404(session, case_id)
     session.delete(db_case)
     session.commit()
 

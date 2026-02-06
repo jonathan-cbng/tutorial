@@ -14,7 +14,7 @@ This module defines endpoints for retrieving all possible values of Species enum
 
 from fastapi import APIRouter
 
-from backend.db_models import Species
+from backend.database.models import Species
 
 #######################################################################################################################
 # Globals

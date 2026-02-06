@@ -204,8 +204,7 @@ class DbHelperMixin:
         session.flush()
 
 
-# Breed
-class Breed(DbHelperMixin, SQLModel, table=True):
+class BreedDbModel(DbHelperMixin, SQLModel, table=True):
     """Database model for animal breeds."""
 
     __tablename__ = "breed"
@@ -214,8 +213,7 @@ class Breed(DbHelperMixin, SQLModel, table=True):
     species: Species = Field(index=True, description="Species this breed belongs to.")
 
 
-# Case
-class Case(DbHelperMixin, SQLModel, table=True):
+class CaseDbModel(DbHelperMixin, SQLModel, table=True):
     """Database model for animal cases."""
 
     __tablename__ = "case"
@@ -229,7 +227,7 @@ class Case(DbHelperMixin, SQLModel, table=True):
     create_date: str | None = Field(default=None, description="Case creation date (YYYY-MM-DD).")
     notes: str | None = Field(default=None, description="Additional notes.")
     breed_id: int = Field(foreign_key="breed.id", description="ID of the breed.")
-    breed: Breed | None = Relationship()
+    breed: BreedDbModel | None = Relationship()
 
 
 #######################################################################################################################

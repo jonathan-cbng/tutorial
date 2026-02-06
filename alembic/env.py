@@ -6,7 +6,7 @@ from sqlmodel import SQLModel
 from alembic import context
 
 # Import all models to register them with SQLModel.metadata
-from backend import db_models  # noqa: F401
+from backend.database import models  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

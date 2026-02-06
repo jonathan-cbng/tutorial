@@ -21,8 +21,8 @@ All endpoints use SQLModel for ORM access and FastAPI dependency injection for d
 from fastapi import APIRouter, Depends, Path, Query
 from sqlmodel import Session, select
 
-from backend.db import get_session
-from backend.db_models import Breed, Species
+from backend.database.models import BreedDbModel, Species
+from backend.database.session import get_session
 
 #######################################################################################################################
 # Globals
@@ -43,7 +43,7 @@ breed_router = APIRouter()
 def list_breeds(
     species: Species | None = Query(None, description="Filter by species"),
     session: Session = Depends(get_session),
-) -> list[Breed]:
+) -> list[BreedDbModel]:
     """
     List all breeds, optionally filtered by species.
 
@@ -57,9 +57,9 @@ def list_breeds(
         list[Breed]: List of breeds.
 
     """
-    query = select(Breed).order_by(Breed.name)
+    query = select(BreedDbModel).order_by(BreedDbModel.name)
     if species:
-        query = query.where(Breed.species == species)
+        query = query.where(BreedDbModel.species == species)
     return list(session.exec(query).all())
 
 
@@ -71,7 +71,7 @@ def list_breeds(
 def get_breed_by_id(
     breed_id: int = Path(..., description="The breed's ID"),
     session: Session = Depends(get_session),
-) -> Breed:
+) -> BreedDbModel:
     """
     Retrieve a breed by ID.
 
@@ -85,7 +85,7 @@ def get_breed_by_id(
         Breed: The breed object.
 
     """
-    return Breed.get_by_id_or_404(session, breed_id)
+    return BreedDbModel.get_by_id_or_404(session, breed_id)
 
 
 @breed_router.get(
@@ -96,7 +96,7 @@ def get_breed_by_id(
 def get_breed_by_name(
     breed_name: str = Path(..., description="The breed's name"),
     session: Session = Depends(get_session),
-) -> Breed:
+) -> BreedDbModel:
     """
     Retrieve a breed by name.
 
@@ -110,7 +110,7 @@ def get_breed_by_name(
         Breed: The breed object.
 
     """
-    return Breed.get_by_name_or_404(session, breed_name)
+    return BreedDbModel.get_by_name_or_404(session, breed_name)
 
 
 #######################################################################################################################

@@ -11,7 +11,7 @@ Defines the HORSE_BREEDS tuple and the ensure_horse_breeds utility for populatin
 
 from sqlmodel import select
 
-from backend.db_models import Breed, Species
+from backend.database.models import BreedDbModel, Species
 
 #######################################################################################################################
 # Globals
@@ -60,8 +60,10 @@ HORSE_BREEDS = (
 
 def ensure_horse_breeds(session):
     """Ensure all standard horse breeds exist in the database for the Equine species."""
-    existing = set(name for name in session.exec(select(Breed.name).where(Breed.species == Species.EQUINE)).all())
-    to_add = [Breed(name=horse, species=Species.EQUINE) for horse in HORSE_BREEDS if horse not in existing]
+    existing = set(
+        name for name in session.exec(select(BreedDbModel.name).where(BreedDbModel.species == Species.EQUINE)).all()
+    )
+    to_add = [BreedDbModel(name=horse, species=Species.EQUINE) for horse in HORSE_BREEDS if horse not in existing]
     if to_add:
         session.add_all(to_add)
         session.commit()

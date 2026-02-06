@@ -7,7 +7,7 @@ Contains all SQLModel/Pydantic models NOT using table=True, for API schemas and 
 
 from sqlmodel import Field, SQLModel
 
-from backend.db_models import Breed, Sex
+from backend.database.models import BreedDbModel, Sex
 
 
 # Case API models
@@ -35,7 +35,7 @@ class CaseRead(CaseBase):
     """Fields for reading a case from the API."""
 
     id: int = Field(..., description="Case ID.")
-    breed: Breed | None = Field(default=None, description="Breed object.")
+    breed: BreedDbModel | None = Field(default=None, description="Breed object.")
 
 
 class CaseUpdate(SQLModel):
