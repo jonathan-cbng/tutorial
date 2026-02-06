@@ -9,9 +9,10 @@ Defines the DOG_BREEDS tuple and the ensure_dog_breeds utility for populating th
 # Imports
 #######################################################################################################################
 
-from sqlmodel import select
+from sqlmodel import Session, select
 
 from database.core.models import Breed, Species
+from database.core.session import needs_session
 
 #######################################################################################################################
 # Globals
@@ -515,13 +516,13 @@ DOG_BREEDS = (
 #######################################################################################################################
 
 
-def ensure_dog_breeds(session):
+@needs_session
+def ensure_dog_breeds(session: Session):
     """Ensure all standard dog breeds exist in the database for the Canine species."""
     existing = set(name for name in session.exec(select(Breed.name).where(Breed.species == Species.CANINE)).all())
     to_add = [Breed(name=dog, species=Species.CANINE) for dog in DOG_BREEDS if dog not in existing]
     if to_add:
         session.add_all(to_add)
-        session.commit()
 
 
 #######################################################################################################################

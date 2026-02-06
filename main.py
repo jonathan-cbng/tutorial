@@ -15,6 +15,7 @@ Run this file directly to start the application with Uvicorn.
 # Imports
 #######################################################################################################################
 
+import asyncio
 import threading
 import time
 import webbrowser
@@ -26,7 +27,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from backend.api import api_router, tags_metadata
-from database.core.session import get_session
+from services.fuzzy import fuzzy_match_service
 from services.static_data.breeds import ensure_cat_breeds, ensure_dog_breeds, ensure_horse_breeds
 
 #######################################################################################################################
@@ -49,13 +50,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     Ensures that all standard dog, cat, and horse breeds and panel types are present in the database at application
     startup.
     """
-    session = next(get_session())
-    ensure_dog_breeds(session)
-    ensure_cat_breeds(session)
-    ensure_horse_breeds(session)
-    session.commit()
+    ensure_dog_breeds()
+    ensure_cat_breeds()
+    ensure_horse_breeds()
+
+    # Start fuzzy match refresh loop
+    refresh_task = asyncio.create_task(fuzzy_match_service.refresh_loop())
     app.setup_complete = True
+
     yield
+
+    # Cancel refresh loop on shutdown
+    refresh_task.cancel()
+    try:
+        await refresh_task
+    except asyncio.CancelledError:
+        pass
 
 
 def get_app() -> FastAPI:

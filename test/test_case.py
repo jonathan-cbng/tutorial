@@ -24,7 +24,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from database.core.models import Breed
-from services.fuzzy import case_field_maps, fuzzy_match_ids
+from services.fuzzy import fuzzy_match_service
 
 #######################################################################################################################
 # Globals
@@ -138,11 +138,10 @@ class TestCaseAPI:
         response = client.delete(f"{self.base_url}/{random_id}")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_fuzzy_search_cases(self, client: TestClient, dog_breed: Breed) -> None:
+    async def test_fuzzy_search_cases(self, client: TestClient, dog_breed: Breed) -> None:
         """Test GET /case/?fuzzy_match=...: Fuzzy search returns expected cases by name, owner, notes, or breed."""
         # Clear caches to avoid stale data between tests
-        fuzzy_match_ids.cache_clear()
-        case_field_maps.cache_clear()
+        # fuzzy_match_service.reset()
 
         # Create several cases with similar and distinct fields
         payloads = [
@@ -167,6 +166,7 @@ class TestCaseAPI:
             resp = client.post(f"{self.base_url}", json=p)
             ids.append(resp.json()["id"])
 
+        await fuzzy_match_service.refresh()
         # Fuzzy search by name (should match both Bella and Bellamy)
         resp = client.get(f"{self.base_url}?fuzzy_match=bell")
         assert resp.status_code == status.HTTP_200_OK

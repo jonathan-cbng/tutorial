@@ -7,6 +7,8 @@ Database setup and session management for the backend.
 - Provides a session generator for dependency injection.
 """
 
+from functools import wraps
+
 from fastapi import HTTPException
 
 #######################################################################################################################
@@ -55,6 +57,41 @@ def get_session():
             raise
         else:
             session.commit()
+
+
+def needs_session(func):
+    """
+    Decorate to provide a SQLmodel session to the decorated function.
+
+    The session is created, closed and committed automatically.
+
+    Usage:
+        @needs_session
+        def some_function(session: Session):
+            # perform database operations with db
+            ...
+
+    """
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if "session" in kwargs:
+            return func(*args, **kwargs)
+        else:
+            with Session(engine) as session:
+                try:
+                    result = func(*args, session=session, **kwargs)
+                except HTTPException:
+                    session.commit()
+                    raise
+                except Exception:
+                    session.rollback()
+                    raise
+                else:
+                    session.commit()
+                return result
+
+    return wrapper
 
 
 if config.DATABASE_URL.startswith("sqlite"):

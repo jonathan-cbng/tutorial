@@ -28,7 +28,7 @@ from sqlmodel import Session
 from backend.api_models import CaseCreate, CaseRead, CaseUpdate
 from database.core.models import Case
 from database.core.session import get_session
-from services.fuzzy import fuzzy_match_ids
+from services.fuzzy import fuzzy_match_service
 
 #######################################################################################################################
 # Globals
@@ -79,7 +79,7 @@ def list_cases(
         list[CaseRead]: List of cases matching the criteria.
 
     """
-    filt = (Case.id.in_(fuzzy_match_ids(fuzzy_match, min_match_score, session)),) if fuzzy_match else None
+    filt = (Case.id.in_(fuzzy_match_service.fuzzy_match_ids(fuzzy_match, min_match_score)),) if fuzzy_match else None
     return Case.get_all(session, greedy_fields=["breed"], additional_filters=filt)
 
 
