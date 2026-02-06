@@ -40,7 +40,7 @@ python_files = "test_*.py"
 asyncio_mode = "auto"
 
 [tool.coverage.run]
-source = ["backend"]
+source = ["backend", "database.core", "services"]
 
 [tool.coverage.report]
 fail_under = 85
