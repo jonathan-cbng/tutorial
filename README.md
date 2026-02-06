@@ -25,20 +25,6 @@ The backend API will be available at <http://localhost:8000/api>.
 
 # Development information
 
-## Coding Standards
-
-01. All commit messages must follow conventional-commit rules (<https://www.conventionalcommits.org/en/v1.0.0/#summary>)
-02. All code must pass ruff checks (<https://beta.ruff.rs/docs/>), including formatting
-03. All code musy conform to the structure of the template files
-04. All code must be covered by tests. Coverage must be >90%
-05. Python files should be type-annotated as much as possible.
-06. Docstring style is Google style (<https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings>.
-07. Function and method docstrings should have Args, Returns and Raises sections as appropriate.
-08. FastAPI endpoints should have fully decorated parameters (e.g. Path, Query, Body etc.) so they render correctly in
-    the OpenAPI docs.
-09. All files must conform to the template files in the `templates/` directory
-10. Max line length is 120 characters for python files.
-
 ## Alembic Migrations
 
 To create a new migration after changing the database models, run:
@@ -145,3 +131,17 @@ Below is a list of the main API endpoints provided by the FastAPI backend.
 ## Database class diagram
 
 ![Database class diagram](docs/db_class_diagram.png)
+
+## Coding Standards
+
+01. All commit messages must follow conventional-commit rules (<https://www.conventionalcommits.org/en/v1.0.0/#summary>)
+02. All code must pass ruff checks (<https://beta.ruff.rs/docs/>), including formatting
+03. All code musy conform to the structure of the template files
+04. All code must be covered by tests. Coverage must be >90%
+05. Python files should be type-annotated as much as possible.
+06. Docstring style is Google style (<https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings>.
+07. Function and method docstrings should have Args, Returns and Raises sections as appropriate.
+08. FastAPI endpoints should have fully decorated parameters (e.g. Path, Query, Body etc.) so they render correctly in
+    the OpenAPI docs.
+09. All files must conform to the template files in the `templates/` directory
+10. Max line length is 120 characters for python files.
