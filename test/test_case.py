@@ -23,8 +23,8 @@ It covers normal and edge cases, including:
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from backend.routes.case import case_field_maps, fuzzy_match_ids
 from database.core.models import BreedDbModel
+from services.fuzzy import case_field_maps, fuzzy_match_ids
 
 #######################################################################################################################
 # Globals
